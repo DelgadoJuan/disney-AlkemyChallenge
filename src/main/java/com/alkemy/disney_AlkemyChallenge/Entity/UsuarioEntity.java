@@ -29,7 +29,7 @@ public class UsuarioEntity {
     private String email;
 
     @NotBlank(message = "La contraseña no puede estar en blanco")
-    @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
+    @Size(min = 8, max = 16, message = "La contraseña debe tener entre 8 y 16 caracteres")
     @Column(nullable = false)
     private String password;
 

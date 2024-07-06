@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.alkemy.disney_AlkemyChallenge.Exception.InvalidPasswordException;
 
 import java.util.HashMap;
 
@@ -26,7 +27,15 @@ public class AuthController {
 
     @PostMapping("/register")
     private ResponseEntity<ResponseDTO> register(@RequestBody UsuarioEntity usuario) throws Exception {
-        return new ResponseEntity<>(authService.register(usuario), HttpStatus.CREATED);
+        try {
+            return new ResponseEntity<>(authService.register(usuario), HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseDTO(1, e.getMessage()));
+        } catch (InvalidPasswordException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDTO(1, e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDTO(1, e.getMessage()));
+        }
     }
 
     @PostMapping("/login")

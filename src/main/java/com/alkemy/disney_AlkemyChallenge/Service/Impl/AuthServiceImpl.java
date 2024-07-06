@@ -3,6 +3,8 @@ package com.alkemy.disney_AlkemyChallenge.Service.Impl;
 import com.alkemy.disney_AlkemyChallenge.DTO.LoginDTO;
 import com.alkemy.disney_AlkemyChallenge.DTO.ResponseDTO;
 import com.alkemy.disney_AlkemyChallenge.Entity.UsuarioEntity;
+import com.alkemy.disney_AlkemyChallenge.Exception.EmailAlreadyRegisteredException;
+import com.alkemy.disney_AlkemyChallenge.Exception.InvalidPasswordException;
 import com.alkemy.disney_AlkemyChallenge.Repository.UsuarioRepository;
 import com.alkemy.disney_AlkemyChallenge.Service.IAuthService;
 import com.alkemy.disney_AlkemyChallenge.Service.IJWTUtilityService;
@@ -53,24 +55,36 @@ public class AuthServiceImpl implements IAuthService {
         }
     }
 
-    public ResponseDTO register(UsuarioEntity usuario) throws Exception {
-        try {
-            ResponseDTO responseDTO = new ResponseDTO();
-            List<UsuarioEntity> getAllUsers = usuarioRepository.findAll();
-            for (UsuarioEntity usuarioEntity : getAllUsers) {
-                if (usuarioEntity.getEmail().equals(usuario.getEmail())) {
-                    throw new Exception(usuario.getEmail() + " ya esta registrado");
-                }
+    public ResponseDTO register(UsuarioEntity usuario) {
+        List<UsuarioEntity> getAllUsers = usuarioRepository.findAll();
+        for (UsuarioEntity usuarioEntity : getAllUsers) {
+            if (usuarioEntity.getEmail().equals(usuario.getEmail())) {
+                throw new EmailAlreadyRegisteredException(usuario.getEmail() + " ya está registrado");
             }
-
-            usuario.setPassword(encoder.encode(usuario.getPassword()));
-            usuarioRepository.save(usuario);
-            responseDTO.setMessage("Usuario registrado");
-
-            return responseDTO;
-        } catch (Exception e) {
-            throw new Exception(e.toString());
         }
+
+        if (!isValidPassword(usuario.getPassword())) {
+            throw new InvalidPasswordException("Contraseña no válida. El formato de la contraseña debe ser minimo una mayuscula, " +
+                    "una minuscula, un numero, un caracter especial, minimo 8 y maximo 16 caracteres, no puede haber " +
+                    "más de dos números iguales consecutivos");
+        }
+
+        usuario.setPassword(encoder.encode(usuario.getPassword()));
+        usuarioRepository.save(usuario);
+
+        ResponseDTO responseDTO = new ResponseDTO();
+        responseDTO.setMessage("Usuario registrado");
+        return responseDTO;
+    }
+
+    private boolean isValidPassword(String password) {
+        if (password == null) {
+            return false;
+        }
+
+        // Regex para validar la estructura básica
+        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+        return password.matches(regex);
     }
 
     private boolean verifyPassword(String enteredPassword, String StoredPassword) {

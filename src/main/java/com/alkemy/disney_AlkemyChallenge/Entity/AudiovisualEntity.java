@@ -1,20 +1,23 @@
 package com.alkemy.disney_AlkemyChallenge.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "audiovisual")
@@ -33,7 +36,6 @@ public class AudiovisualEntity {
     @Column(nullable = false)
     private String imagen;
 
-    @CreationTimestamp
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDate fechaCreacion;
 
@@ -43,10 +45,12 @@ public class AudiovisualEntity {
     private int calificacion;
 
     @ManyToOne
-    @JoinColumn(name = "id_genero", nullable = false)
+    @JoinColumn(name = "id_genero")
+    @JsonBackReference
     private GeneroEntity genero;
 
     @ManyToMany(mappedBy = "audiovisuales")
+    @JsonIgnore
     private Set<PersonajeEntity> personajes;
 
     public AudiovisualEntity(String titulo, String imagen, int calififacion, GeneroEntity genero) {
@@ -54,5 +58,37 @@ public class AudiovisualEntity {
         this.imagen = imagen;
         this.calificacion = calififacion;
         this.genero = genero;
+        this.personajes = new HashSet<>();
+    }
+
+    public AudiovisualEntity(String titulo, String imagen, LocalDate fechaCreacion, int calificacion,
+                             GeneroEntity genero, Set<PersonajeEntity> personajes) {
+        this.titulo = titulo;
+        this.imagen = imagen;
+        this.fechaCreacion = fechaCreacion;
+        this.calificacion = calificacion;
+        this.genero = genero;
+        this.personajes = personajes;
+    }
+
+    public void addCharacter(PersonajeEntity personaje) {
+        this.personajes.add(personaje);
+    }
+
+    public void removeCharacter(PersonajeEntity personaje) {
+        this.personajes.remove(personaje);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AudiovisualEntity that = (AudiovisualEntity) o;
+        return calificacion == that.calificacion && Objects.equals(id, that.id) && Objects.equals(titulo, that.titulo) && Objects.equals(imagen, that.imagen) && Objects.equals(fechaCreacion, that.fechaCreacion) && Objects.equals(genero, that.genero) && Objects.equals(personajes, that.personajes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, titulo, imagen, fechaCreacion, calificacion);
     }
 }

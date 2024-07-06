@@ -3,6 +3,7 @@ package com.alkemy.disney_AlkemyChallenge.Controller;
 import com.alkemy.disney_AlkemyChallenge.DTO.Personaje.PersonajeListDTO;
 import com.alkemy.disney_AlkemyChallenge.Entity.PersonajeEntity;
 import com.alkemy.disney_AlkemyChallenge.Service.IPersonajeService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class PersonajeController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addCharacter(@RequestBody PersonajeEntity character) {
+    public ResponseEntity<Void> addCharacter(@RequestBody @Valid PersonajeEntity character) {
         boolean isAdded = personajeService.addCharacter(character);
         if (isAdded) {
             return ResponseEntity.status(HttpStatus.CREATED).build();

@@ -61,4 +61,12 @@ public class PersonajeEntity {
         this.imagen = imagen;
         this.historia = historia;
     }
+
+    public void addAudiovisual(AudiovisualEntity audiovisual) {
+        audiovisuales.add(audiovisual);
+    }
+
+    public void removeAudiovisual(AudiovisualEntity audiovisual) {
+        audiovisuales.remove(audiovisual);
+    }
 }
