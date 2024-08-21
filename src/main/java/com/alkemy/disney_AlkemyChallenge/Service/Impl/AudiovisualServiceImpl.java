@@ -17,6 +17,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +32,7 @@ public class AudiovisualServiceImpl implements IAudiovisualService {
     private final GeneroRepository generoRepository;
     private final PersonajeRepository personajeRepository;
     private final AudiovisualRepository audiovisualRepository;
+    private final String directory = "src/main/resources/static/images/audiovisual/";
 
     @Autowired
     public AudiovisualServiceImpl(AudiovisualEntityToAudiovisualDTO audiovisualEntityToAudiovisualDTO, AudiovisualDTOToAudiovisualEntity audiovisualDTOToAudiovisualEntity, GeneroRepository generoRepository, PersonajeRepository personajeRepository,
@@ -82,9 +88,17 @@ public class AudiovisualServiceImpl implements IAudiovisualService {
     }
 
     @Override
-    public boolean addAudiovisual(AudiovisualDTO audiovisual) {
+    public boolean addAudiovisual(AudiovisualDTO audiovisualDTO) {
         try {
-            AudiovisualEntity audiovisualEntity = audiovisualDTOToAudiovisualEntity.convert(audiovisual);
+            AudiovisualEntity audiovisualEntity = audiovisualDTOToAudiovisualEntity.convert(audiovisualDTO);
+
+            String fileName = audiovisualDTO.getImagen().getOriginalFilename();
+            Path path = Paths.get(directory + fileName);
+            Files.createDirectories(path.getParent());
+            Files.copy(audiovisualDTO.getImagen().getInputStream(),path, StandardCopyOption.REPLACE_EXISTING);
+
+            audiovisualEntity.setImagen(directory + fileName);
+
             audiovisualRepository.save(audiovisualEntity);
             return true;
         } catch (Exception e) {
@@ -104,15 +118,31 @@ public class AudiovisualServiceImpl implements IAudiovisualService {
     }
 
     @Override
-    public boolean updateAudiovisual(Long id, AudiovisualDTO audiovisual) {
+    public boolean updateAudiovisual(Long id, AudiovisualDTO audiovisualDTO) {
         try {
             AudiovisualEntity currentAudiovisual = audiovisualRepository.findById(id).orElseThrow();
-            currentAudiovisual.setTitulo(audiovisual.getTitulo());
-            currentAudiovisual.setImagen(audiovisual.getImagen());
+            currentAudiovisual.setTitulo(audiovisualDTO.getTitulo());
             GeneroEntity generoEntity = generoRepository.findById(id).orElseThrow();
             generoEntity.addAudiovisual(currentAudiovisual);
             currentAudiovisual.setGenero(generoEntity);
-            currentAudiovisual.setCalificacion(audiovisual.getCalificacion());
+            currentAudiovisual.setCalificacion(audiovisualDTO.getCalificacion());
+
+            // Eliminar la imagen anterior si existe
+            String oldImagePath = currentAudiovisual.getImagen();
+            if (oldImagePath != null) {
+                File oldImageFile = new File(oldImagePath);
+                if (oldImageFile.exists()) {
+                    oldImageFile.delete(); // Borrar la imagen anterior
+                }
+            }
+
+            // Guardar la nueva imagen
+            String fileName = audiovisualDTO.getImagen().getOriginalFilename();
+            Path path = Paths.get(directory + fileName);
+            Files.createDirectories(path.getParent());
+            Files.copy(audiovisualDTO.getImagen().getInputStream(),path, StandardCopyOption.REPLACE_EXISTING);
+            currentAudiovisual.setImagen(directory + fileName);
+
             generoRepository.save(generoEntity);
             audiovisualRepository.save(currentAudiovisual);
             return true;

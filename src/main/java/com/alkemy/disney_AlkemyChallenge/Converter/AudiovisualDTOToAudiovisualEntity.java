@@ -21,7 +21,6 @@ public class AudiovisualDTOToAudiovisualEntity implements Converter<AudiovisualD
     public AudiovisualEntity convert(AudiovisualDTO audiovisualDTO) {
         AudiovisualEntity audiovisualEntity = new AudiovisualEntity();
         audiovisualEntity.setTitulo(audiovisualDTO.getTitulo());
-        audiovisualEntity.setImagen(audiovisualDTO.getImagen());
         audiovisualEntity.setCalificacion(audiovisualDTO.getCalificacion());
         audiovisualEntity.setFechaCreacion(audiovisualDTO.getFechaCreacion());
         GeneroEntity genero = generoRepository.findById(audiovisualDTO.getGeneroId()).orElseThrow();

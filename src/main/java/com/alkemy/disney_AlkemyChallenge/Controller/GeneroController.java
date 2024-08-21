@@ -1,9 +1,11 @@
 package com.alkemy.disney_AlkemyChallenge.Controller;
 
+import com.alkemy.disney_AlkemyChallenge.DTO.Genero.GeneroDTO;
 import com.alkemy.disney_AlkemyChallenge.Entity.GeneroEntity;
 import com.alkemy.disney_AlkemyChallenge.Service.IGeneroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,18 +26,18 @@ public class GeneroController {
         return new ResponseEntity<>(generoService.getGeneros(), HttpStatus.OK);
     }
 
-    @PostMapping()
-    public ResponseEntity<?> addGenre(@RequestBody GeneroEntity generoEntity) {
-        boolean isCreated = generoService.addGenero(generoEntity);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> addGenre(@ModelAttribute GeneroDTO generoDTO) {
+        boolean isCreated = generoService.addGenero(generoDTO);
         if (isCreated) {
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateGenre(@PathVariable Long id, @RequestBody GeneroEntity generoEntity) {
-        boolean isUpdated = generoService.updateGenero(id, generoEntity);
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateGenre(@PathVariable Long id, @ModelAttribute GeneroDTO generoDTO) {
+        boolean isUpdated = generoService.updateGenero(id, generoDTO);
         if (isUpdated) {
             return new ResponseEntity<>(HttpStatus.OK);
         }

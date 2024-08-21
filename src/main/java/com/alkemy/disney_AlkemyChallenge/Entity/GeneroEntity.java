@@ -33,12 +33,11 @@ public class GeneroEntity {
 
     @OneToMany(mappedBy = "genero")
     @JsonManagedReference
-    private Set<AudiovisualEntity> audiovisuales;
+    private Set<AudiovisualEntity> audiovisuales = new HashSet<>();
 
     public GeneroEntity(String nombre, String imagen) {
         this.nombre = nombre;
         this.imagen = imagen;
-        this.audiovisuales = new HashSet<>();
     }
 
     public void addAudiovisual(AudiovisualEntity audiovisual) {

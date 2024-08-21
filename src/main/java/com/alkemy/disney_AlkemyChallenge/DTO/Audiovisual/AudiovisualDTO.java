@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -21,8 +22,7 @@ public class AudiovisualDTO {
 
     @NotBlank(message = "La imagen no puede estar en blanco")
     @Size(max = 255, message = "La URL de la imagen no puede tener más de 255 caracteres")
-    @Column(nullable = false)
-    private String imagen;
+    private MultipartFile imagen;
 
     @CreationTimestamp
     @Column(name = "fecha_creacion", nullable = false)

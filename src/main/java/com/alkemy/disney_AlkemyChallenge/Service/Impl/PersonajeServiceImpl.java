@@ -1,5 +1,7 @@
 package com.alkemy.disney_AlkemyChallenge.Service.Impl;
 
+import com.alkemy.disney_AlkemyChallenge.Converter.PersonajeDTOToPersonajeEntity;
+import com.alkemy.disney_AlkemyChallenge.DTO.Personaje.PersonajeDTO;
 import com.alkemy.disney_AlkemyChallenge.DTO.Personaje.PersonajeListDTO;
 import com.alkemy.disney_AlkemyChallenge.Entity.PersonajeEntity;
 import com.alkemy.disney_AlkemyChallenge.Repository.PersonajeRepository;
@@ -7,6 +9,11 @@ import com.alkemy.disney_AlkemyChallenge.Service.IPersonajeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,10 +22,13 @@ import java.util.stream.Collectors;
 public class PersonajeServiceImpl implements IPersonajeService {
 
     private final PersonajeRepository personajeRepository;
+    private final PersonajeDTOToPersonajeEntity personajeDTOToPersonajeEntity;
+    private final String directory = "src/main/resources/static/images/personaje/";
 
     @Autowired
-    public PersonajeServiceImpl(PersonajeRepository personajeRepository) {
+    public PersonajeServiceImpl(PersonajeRepository personajeRepository, PersonajeDTOToPersonajeEntity personajeDTOToPersonajeEntity) {
         this.personajeRepository = personajeRepository;
+        this.personajeDTOToPersonajeEntity = personajeDTOToPersonajeEntity;
     }
 
     // GET
@@ -57,9 +67,18 @@ public class PersonajeServiceImpl implements IPersonajeService {
 
     // POST
     @Override
-    public boolean addCharacter(PersonajeEntity character) {
+    public boolean addCharacter(PersonajeDTO personajeDTO) {
         try {
-            personajeRepository.save(character);
+            String fileName = personajeDTO.getImagen().getOriginalFilename();
+
+            Path path = Paths.get(directory + fileName);
+            Files.createDirectories(path.getParent());
+            Files.copy(personajeDTO.getImagen().getInputStream(),path, StandardCopyOption.REPLACE_EXISTING);
+
+            PersonajeEntity personajeEntity = personajeDTOToPersonajeEntity.convert(personajeDTO);
+            personajeEntity.setImagen("/images/personaje/" + fileName);
+
+            personajeRepository.save(personajeEntity);
             return true;
         } catch (Exception e) {
             return false;
@@ -79,16 +98,31 @@ public class PersonajeServiceImpl implements IPersonajeService {
 
     // PUT
     @Override
-    public boolean updateCharacter(Long id, PersonajeEntity character) {
-        PersonajeEntity currentCharacter = null;
+    public boolean updateCharacter(Long id, PersonajeDTO personajeDTO) {
         try {
-            currentCharacter = personajeRepository.findById(id).orElseThrow(() -> new Exception("Personaje no encontrado"));
-            currentCharacter.setNombre(character.getNombre());
-            currentCharacter.setImagen(character.getImagen());
-            currentCharacter.setEdad(character.getEdad());
-            currentCharacter.setPeso(character.getPeso());
-            currentCharacter.setHistoria(character.getHistoria());
+            PersonajeEntity currentCharacter = personajeRepository.findById(id).orElseThrow(() -> new Exception("Personaje no encontrado"));
+            currentCharacter.setNombre(personajeDTO.getNombre());
+            currentCharacter.setEdad(personajeDTO.getEdad());
+            currentCharacter.setPeso(personajeDTO.getPeso());
+            currentCharacter.setHistoria(personajeDTO.getHistoria());
+
+            // Eliminar la imagen anterior si existe
+            String oldImagePath = currentCharacter.getImagen();
+            if (oldImagePath != null) {
+                File oldImageFile = new File(oldImagePath);
+                if (oldImageFile.exists()) {
+                    oldImageFile.delete(); // Borrar la imagen anterior
+                }
+            }
+
+            String fileName = personajeDTO.getImagen().getOriginalFilename();
+            Path path = Paths.get(directory + fileName);
+            Files.createDirectories(path.getParent());
+            Files.copy(personajeDTO.getImagen().getInputStream(),path, StandardCopyOption.REPLACE_EXISTING);
+            currentCharacter.setImagen(directory + fileName);
+
             personajeRepository.save(currentCharacter);
+
             return true;
         } catch (Exception e) {
             return false;

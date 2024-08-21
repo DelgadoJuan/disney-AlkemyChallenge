@@ -1,5 +1,6 @@
 package com.alkemy.disney_AlkemyChallenge.Controller;
 
+import com.alkemy.disney_AlkemyChallenge.DTO.Personaje.PersonajeDTO;
 import com.alkemy.disney_AlkemyChallenge.DTO.Personaje.PersonajeListDTO;
 import com.alkemy.disney_AlkemyChallenge.Entity.PersonajeEntity;
 import com.alkemy.disney_AlkemyChallenge.Service.IPersonajeService;
@@ -35,8 +36,8 @@ public class PersonajeController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addCharacter(@RequestBody @Valid PersonajeEntity character) {
-        boolean isAdded = personajeService.addCharacter(character);
+    public ResponseEntity<Void> addCharacter(@RequestBody @Valid PersonajeDTO personajeDTO) {
+        boolean isAdded = personajeService.addCharacter(personajeDTO);
         if (isAdded) {
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }
@@ -53,8 +54,8 @@ public class PersonajeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateCharacter(@PathVariable Long id, @RequestBody PersonajeEntity character) {
-        boolean isUpdated = personajeService.updateCharacter(id, character);
+    public ResponseEntity<Void> updateCharacter(@PathVariable Long id, @RequestBody PersonajeDTO personajeDTO) {
+        boolean isUpdated = personajeService.updateCharacter(id, personajeDTO);
         if (isUpdated) {
             return ResponseEntity.status(HttpStatus.OK).build();
         }

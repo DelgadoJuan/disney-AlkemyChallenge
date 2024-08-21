@@ -1,5 +1,6 @@
 package com.alkemy.disney_AlkemyChallenge.Service;
 
+import com.alkemy.disney_AlkemyChallenge.DTO.Personaje.PersonajeDTO;
 import com.alkemy.disney_AlkemyChallenge.DTO.Personaje.PersonajeListDTO;
 import com.alkemy.disney_AlkemyChallenge.Entity.PersonajeEntity;
 
@@ -13,7 +14,7 @@ public interface IPersonajeService {
     List<PersonajeEntity> getCharactersByAge(int age);
     List<PersonajeEntity> getCharactersByWeight(double weight);
     List<PersonajeEntity> getCharactersByAudiovisual(Long audiovisualId);
-    boolean addCharacter(PersonajeEntity character);
+    boolean addCharacter(PersonajeDTO personajeDTO);
     boolean removeCharacter(Long id);
-    boolean updateCharacter(Long id, PersonajeEntity character);
+    boolean updateCharacter(Long id, PersonajeDTO personajeDTO);
 }

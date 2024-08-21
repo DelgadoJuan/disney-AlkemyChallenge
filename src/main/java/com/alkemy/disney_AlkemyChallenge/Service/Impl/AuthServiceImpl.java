@@ -89,7 +89,7 @@ public class AuthServiceImpl implements IAuthService {
                 "<p>Saludos cordiales,<br>El equipo de Disney</p>";
 
         emailService.sendEmail(new EmailDTO(usuario.getEmail(), subject, body),
-                "src/main/resources/static/mail/disney.jpg");
+                "src/main/resources/static/images/mail/disney.jpg");
 
         return responseDTO;
     }
