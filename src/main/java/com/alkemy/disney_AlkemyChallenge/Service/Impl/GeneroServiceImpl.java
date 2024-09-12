@@ -8,6 +8,7 @@ import com.alkemy.disney_AlkemyChallenge.Repository.GeneroRepository;
 import com.alkemy.disney_AlkemyChallenge.Service.IGeneroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -94,15 +95,16 @@ public class GeneroServiceImpl implements IGeneroService {
     }
 
     @Override
+    @Transactional
     public boolean deleteAudiovisualFromGenre(Long id, Long audiovisualId) {
         try {
+
             GeneroEntity generoEntity = generoRepository.findById(id).orElseThrow();
             AudiovisualEntity audiovisualEntity = AudiovisualRepository.findById(audiovisualId).orElseThrow();
 
             generoEntity.removeAudiovisual(audiovisualEntity);
-            audiovisualEntity.setGenero(null);
-            AudiovisualRepository.save(audiovisualEntity);
             generoRepository.save(generoEntity);
+
             return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -11,6 +11,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -40,4 +42,21 @@ public class PersonajeDTO {
     @Size(max = 255, message = "La URL de la imagen no puede tener más de 255 caracteres")
     @Column(nullable = false)
     private MultipartFile imagen;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PersonajeDTO that = (PersonajeDTO) o;
+        return edad == that.edad &&
+                Double.compare(that.peso, peso) == 0 &&
+                Objects.equals(nombre, that.nombre) &&
+                Objects.equals(historia, that.historia) &&
+                Objects.equals(imagen, that.imagen);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nombre, edad, peso, historia, imagen);
+    }
 }

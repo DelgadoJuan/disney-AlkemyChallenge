@@ -166,7 +166,6 @@ public class AudiovisualServiceImpl implements IAudiovisualService {
             audiovisual.addCharacter(personaje);
             personaje.addAudiovisual(audiovisual);
             personajeRepository.save(personaje);
-            audiovisualRepository.save(audiovisual);
             return true;
         } catch (Exception e) {
             return false;
@@ -187,7 +186,28 @@ public class AudiovisualServiceImpl implements IAudiovisualService {
             audiovisual.removeCharacter(personaje);
             personaje.removeAudiovisual(audiovisual);
             personajeRepository.save(personaje);
-            audiovisualRepository.save(audiovisual);
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updateGenre(Long id, Long genreId) {
+        try {
+            AudiovisualEntity audiovisual = audiovisualRepository.findById(id)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                            "No se encontró un audiovisual con el ID: " + id));
+
+            GeneroEntity genero = generoRepository.findById(genreId)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                            "No se encontró un género con el ID: " + genreId));
+
+            audiovisual.setGenero(genero);
+            genero.addAudiovisual(audiovisual);
+
+            generoRepository.save(genero);
 
             return true;
         } catch (Exception e) {

@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -69,18 +70,19 @@ public class PersonajeServiceImpl implements IPersonajeService {
     @Override
     public boolean addCharacter(PersonajeDTO personajeDTO) {
         try {
-            String fileName = personajeDTO.getImagen().getOriginalFilename();
+            PersonajeEntity personajeEntity = personajeDTOToPersonajeEntity.convert(personajeDTO);
 
+            String fileName = personajeDTO.getImagen().getOriginalFilename();
             Path path = Paths.get(directory + fileName);
             Files.createDirectories(path.getParent());
             Files.copy(personajeDTO.getImagen().getInputStream(),path, StandardCopyOption.REPLACE_EXISTING);
 
-            PersonajeEntity personajeEntity = personajeDTOToPersonajeEntity.convert(personajeDTO);
-            personajeEntity.setImagen("/images/personaje/" + fileName);
+            personajeEntity.setImagen(directory + fileName);
 
             personajeRepository.save(personajeEntity);
             return true;
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return false;
         }
     }

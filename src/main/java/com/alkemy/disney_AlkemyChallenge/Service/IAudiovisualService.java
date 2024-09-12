@@ -18,4 +18,5 @@ public interface IAudiovisualService {
     boolean updateAudiovisual(Long id, AudiovisualDTO audiovisual);
     boolean addCharacter(Long id, Long personajeId);
     boolean removeCharacter(Long id, Long personajeId);
+    boolean updateGenre(Long id, Long genreId);
 }

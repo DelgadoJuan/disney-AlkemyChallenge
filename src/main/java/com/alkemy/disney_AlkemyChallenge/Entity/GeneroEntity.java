@@ -46,6 +46,7 @@ public class GeneroEntity {
 
     public void removeAudiovisual(AudiovisualEntity audiovisualEntity) {
         this.audiovisuales.remove(audiovisualEntity);
+        audiovisualEntity.setGenero(null);
     }
 
     @Override

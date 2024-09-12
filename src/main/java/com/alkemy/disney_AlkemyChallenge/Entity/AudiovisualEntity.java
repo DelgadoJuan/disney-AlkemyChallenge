@@ -51,14 +51,13 @@ public class AudiovisualEntity {
 
     @ManyToMany(mappedBy = "audiovisuales")
     @JsonIgnore
-    private Set<PersonajeEntity> personajes;
+    private Set<PersonajeEntity> personajes = new HashSet<>();
 
     public AudiovisualEntity(String titulo, String imagen, int calififacion, GeneroEntity genero) {
         this.titulo = titulo;
         this.imagen = imagen;
         this.calificacion = calififacion;
         this.genero = genero;
-        this.personajes = new HashSet<>();
     }
 
     public AudiovisualEntity(String titulo, String imagen, LocalDate fechaCreacion, int calificacion,

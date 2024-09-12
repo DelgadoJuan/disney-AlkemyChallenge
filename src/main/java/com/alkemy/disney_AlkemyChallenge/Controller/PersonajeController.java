@@ -7,6 +7,7 @@ import com.alkemy.disney_AlkemyChallenge.Service.IPersonajeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,11 +36,11 @@ public class PersonajeController {
         return new ResponseEntity<>(personajeService.charactersList(), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<Void> addCharacter(@RequestBody @Valid PersonajeDTO personajeDTO) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> addCharacter(@ModelAttribute PersonajeDTO personajeDTO) {
         boolean isAdded = personajeService.addCharacter(personajeDTO);
         if (isAdded) {
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            return new ResponseEntity<>("Personaje creado", HttpStatus.CREATED);
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
@@ -53,8 +54,8 @@ public class PersonajeController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateCharacter(@PathVariable Long id, @RequestBody PersonajeDTO personajeDTO) {
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> updateCharacter(@PathVariable Long id, @ModelAttribute PersonajeDTO personajeDTO) {
         boolean isUpdated = personajeService.updateCharacter(id, personajeDTO);
         if (isUpdated) {
             return ResponseEntity.status(HttpStatus.OK).build();

@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -35,4 +36,17 @@ public class AudiovisualDTO {
 
     @Positive(message = "El id debe ser un número positivo")
     private Long generoId;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AudiovisualDTO that = (AudiovisualDTO) o;
+        return calificacion == that.calificacion && Objects.equals(titulo, that.titulo) && Objects.equals(imagen, that.imagen) && Objects.equals(fechaCreacion, that.fechaCreacion) && Objects.equals(generoId, that.generoId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(titulo, imagen, fechaCreacion, calificacion, generoId);
+    }
 }

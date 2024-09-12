@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -52,7 +53,7 @@ public class PersonajeEntity {
             joinColumns = @JoinColumn(name = "id_personaje"),
             inverseJoinColumns = @JoinColumn(name = "id_audiovisual")
     )
-    private Set<AudiovisualEntity> audiovisuales;
+    private Set<AudiovisualEntity> audiovisuales = new HashSet<>();
 
     public PersonajeEntity(String nombre, int edad, double peso, String imagen, String historia) {
         this.nombre = nombre;

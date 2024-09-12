@@ -8,6 +8,7 @@ import com.alkemy.disney_AlkemyChallenge.Service.IAudiovisualService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,11 +37,11 @@ public class AudiovisualController {
         return ResponseEntity.ok(audiovisual);
     }
 
-    @PostMapping
-    public ResponseEntity<?> addAudiovisual(@RequestBody @Valid AudiovisualDTO audiovisual) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> addAudiovisual(@ModelAttribute @Valid AudiovisualDTO audiovisual) {
         boolean isAdded = audiovisualService.addAudiovisual(audiovisual);
         return isAdded ?
-                ResponseEntity.status(HttpStatus.CREATED).body(audiovisual) :
+                ResponseEntity.status(HttpStatus.CREATED).build() :
                 ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
@@ -52,9 +53,18 @@ public class AudiovisualController {
                 ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateAudiovisualById(@PathVariable Long id, @RequestBody @Valid AudiovisualDTO audiovisual) {
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateAudiovisualById(@PathVariable Long id, @ModelAttribute @Valid AudiovisualDTO audiovisual) {
         boolean isUpdated = audiovisualService.updateAudiovisual(id, audiovisual);
+        return isUpdated ?
+                ResponseEntity.ok().build() :
+                ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateGenre(@PathVariable Long id, @RequestBody Map<String, Long> genre) {
+        Long genreId = genre.get("genreId");
+        boolean isUpdated = audiovisualService.updateGenre(id, genreId);
         return isUpdated ?
                 ResponseEntity.ok().build() :
                 ResponseEntity.status(HttpStatus.CONFLICT).build();
