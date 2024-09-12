@@ -1,0 +1,762 @@
+{
+	"info": {
+		"_postman_id": "5c786aa2-fbe0-4d9b-adc1-2d582d803155",
+		"name": "Disney",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17987580"
+	},
+	"item": [
+		{
+			"name": "Personajes",
+			"item": [
+				{
+					"name": "Crear personaje",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nombre",
+									"value": "Micky Mouse",
+									"type": "text"
+								},
+								{
+									"key": "edad",
+									"value": "92",
+									"type": "text"
+								},
+								{
+									"key": "peso",
+									"value": "23.5",
+									"type": "text"
+								},
+								{
+									"key": "historia",
+									"value": "Historia de Micky Mouse",
+									"type": "text"
+								},
+								{
+									"key": "imagen",
+									"type": "file",
+									"src": "/C:/Users/Juan/Downloads/mickymouse.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/characters",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"characters"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener todos los personajes",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/characters",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"characters"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener por peso",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/characters?weight=60",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"characters"
+							],
+							"query": [
+								{
+									"key": "weight",
+									"value": "60"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener por nombre",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/characters?name=Juan Delgado",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"characters"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Juan Delgado"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/characters/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"characters",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener por edad",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/characters?age=22",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"characters"
+							],
+							"query": [
+								{
+									"key": "age",
+									"value": "22"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener por audiovisual",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/characters?audiovisualId=2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"characters"
+							],
+							"query": [
+								{
+									"key": "audiovisualId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar personaje",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/characters/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"characters",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar personaje",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Juan Agustín Delgado\",\r\n    \"edad\": 20,\r\n    \"peso\": 45,\r\n    \"historia\": \"Nashe\",\r\n    \"imagen\": \"https://www.google.com/search?q=juan&client=opera-gx&hs=k01&sxsrf=APq-WBtLfDy2LIjvK2QDtj3i6fh8lPPtuw:1645647709389&source=lnms&tbm=isch&sa=X&ved=2ahUKEwip2ZK505b2AhUoE7kGHWmUA0UQ_AUoAXoECAEQAw&biw=1879&bih=939&dpr=1#imgrc=-y3Z7QzQrnuBaM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/characters/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"characters",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "Listar usuarios",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE5ODg1MDY0LCJpYXQiOjE3MTk4NzA2NjR9.NkxUzjwGTX4VduVfkKk5osyTyU15ISSigL8B5gYp_U7TwqZtemCoJRcfaNc5gJjD78JO9BN7WCwKxZC8YefaIrpER6NOGo_KS-LORq4wYw9dBVubIXkdiqajfdA_7rzITR6DCv5X9ygDS1fEzpwsywQIdmhKZwxqpy10StiIdkVj4B1TkKd0bfjj1T0_GyHfOkfioGZpR5MhkTwTSWb98LbLtGe_PNXGFXs44nQhGT_LwiYPfNw3EceZkZdzutmZBSbssw3Jy4lnP_sVhIjN9txDeDWDM2FMQWX3RC42dRYFkKlUMhIXZG_PCv6IPOvsv-hl77P6W8eUaP8aDDwHqg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/user/findAll",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"findAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"juandelgado\",\r\n    \"email\": \"juandelgado@live.com.ar\",\r\n    \"password\": \"Contraseña123#\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/auth/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"juandelgado@live.com.ar\",\r\n    \"password\": \"Contraseña123#\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Género",
+			"item": [
+				{
+					"name": "Añadir género",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nombre",
+									"value": "Infantil",
+									"type": "text"
+								},
+								{
+									"key": "imagen",
+									"type": "file",
+									"src": "/C:/Users/Juan/Pictures/Screenshots/Captura de pantalla 2024-03-18 204247.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/genre",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"genre"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener generos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/genre",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"genre"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remover audiovisual",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/genre/2/audiovisuals/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"genre",
+								"2",
+								"audiovisuals",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar genero",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nombre",
+									"value": "Drama",
+									"type": "text"
+								},
+								{
+									"key": "imagen",
+									"type": "file",
+									"src": "/C:/Users/Juan/Downloads/images.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/genre/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"genre",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar genero",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/genre/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"genre",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Audiovisual",
+			"item": [
+				{
+					"name": "Añadir audiovisual",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "titulo",
+									"value": "La Bella y la Bestia",
+									"type": "text"
+								},
+								{
+									"key": "imagen",
+									"type": "file",
+									"src": "/C:/Users/Juan/Pictures/Screenshots/Captura de pantalla 2024-05-21 210305.png"
+								},
+								{
+									"key": "fechaCreacion",
+									"value": "2002-03-02",
+									"type": "text"
+								},
+								{
+									"key": "calificacion",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "generoId",
+									"value": "4",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/audiovisuals",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"audiovisuals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filtrar por nombre",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/audiovisuals?title=Juego de Gemelas",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"audiovisuals"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Juego de Gemelas"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ordenar ASC|DESC",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/audiovisuals?order=desc",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"audiovisuals"
+							],
+							"query": [
+								{
+									"key": "order",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filtrar por genero",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/audiovisuals?genre=1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"audiovisuals"
+							],
+							"query": [
+								{
+									"key": "genre",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener audiovisuales",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/audiovisuals",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"audiovisuals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener audiovisual",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/audiovisuals/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"audiovisuals",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar audiovisual",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"titulo\": \"Juego de Gemelas\",\r\n    \"imagen\": \"asd\",\r\n    \"fechaCreacion\": \"1999-01-28\",\r\n    \"calificacion\": \"5\",\r\n    \"generoId\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/audiovisuals/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"audiovisuals",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar audiovisual",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/audiovisuals/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"audiovisuals",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Añadir personaje",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"personajeId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/audiovisuals/2/characters",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"audiovisuals",
+								"2",
+								"characters"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remover personaje",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/audiovisuals/2/characters/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"audiovisuals",
+								"2",
+								"characters",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"genreId\": \"4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/audiovisuals/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"audiovisuals",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

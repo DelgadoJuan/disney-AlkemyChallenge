@@ -1,0 +1,513 @@
+openapi: 3.0.0
+info:
+  title: API Disney
+  description: API para la gestión de personajes, géneros, usuarios y audiovisuales.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /characters:
+    get:
+      summary: Obtener todos los personajes o buscar por filtros
+      parameters:
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filtrar por nombre de personaje
+        - name: age
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Filtrar por edad del personaje
+        - name: weight
+          in: query
+          required: false
+          schema:
+            type: number
+          description: Filtrar por peso del personaje
+        - name: audiovisualId
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Filtrar por ID de audiovisual relacionado
+      responses:
+        '200':
+          description: Lista de personajes, con o sin filtros aplicados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Character'
+      security:
+        - jwtAuth: []
+    post:
+      summary: Crear un personaje
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                edad:
+                  type: integer
+                peso:
+                  type: number
+                historia:
+                  type: string
+                imagen:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Personaje creado
+      security:
+        - jwtAuth: []
+  /characters/{id}:
+    get:
+      summary: Obtener personaje por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Datos del personaje
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Character'
+      security:
+        - jwtAuth: []
+    delete:
+      summary: Eliminar un personaje por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Personaje eliminado
+      security:
+        - jwtAuth: []
+    put:
+      summary: Modificar parcialmente un personaje
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                edad:
+                  type: integer
+                peso:
+                  type: number
+                historia:
+                  type: string
+                imagen:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Personaje modificado parcialmente
+      security:
+        - jwtAuth: []
+  /genre:
+    get:
+      summary: Obtener todos los géneros
+      responses:
+        '200':
+          description: Lista de géneros
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Genre'
+      security:
+        - jwtAuth: []
+    post:
+      summary: Crear un género
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                imagen:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Género creado
+      security:
+        - jwtAuth: []
+  /genre/{id}:
+    put:
+      summary: Modificar un género
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                imagen:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Género modificado
+      security:
+        - jwtAuth: []
+    delete:
+      summary: Eliminar un género
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Género eliminado
+      security:
+        - jwtAuth: []
+    patch:
+      summary: Modificar parcialmente un género
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                imagen:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Género modificado parcialmente
+      security:
+        - jwtAuth: []
+  /audiovisuals:
+    get:
+      summary: Obtener todos los audiovisuales o buscar por filtros
+      parameters:
+        - name: title
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filtrar por título del audiovisual
+        - name: genre
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Filtrar por ID de género
+        - name: order
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+          description: Ordenar por fecha de creación (asc o desc)
+      responses:
+        '200':
+          description: Lista de audiovisuales, con o sin filtros aplicados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Audiovisual'
+      security:
+        - jwtAuth: []
+    post:
+      summary: Crear un audiovisual
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                titulo:
+                  type: string
+                imagen:
+                  type: string
+                  format: binary
+                fechaCreacion:
+                  type: string
+                  format: date
+                calificacion:
+                  type: integer
+                generoId:
+                  type: integer
+      responses:
+        '201':
+          description: Audiovisual creado
+      security:
+        - jwtAuth: []
+  /audiovisuals/{id}:
+    get:
+      summary: Obtener un audiovisual por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Datos del audiovisual
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Audiovisual'
+      security:
+        - jwtAuth: []
+    put:
+      summary: Modificar un audiovisual
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Audiovisual'
+      responses:
+        '200':
+          description: Audiovisual modificado
+      security:
+        - jwtAuth: []
+    delete:
+      summary: Eliminar un audiovisual
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Audiovisual eliminado
+      security:
+        - jwtAuth: []
+    patch:
+      summary: Modificar el género de un audiovisual
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                generoId:
+                  type: integer
+      responses:
+        '200':
+          description: Género del audiovisual modificado
+      security:
+        - jwtAuth: []
+  /audiovisuals/{id}/characters:
+    patch:
+      summary: Añadir un personaje al audiovisual
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                personajeId:
+                  type: integer
+      responses:
+        '200':
+          description: Personaje añadido al audiovisual
+      security:
+        - jwtAuth: []
+  /audiovisuals/{id}/characters/{personajeId}:
+    patch:
+      summary: Eliminar un personaje del audiovisual
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: personajeId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Personaje eliminado del audiovisual
+      security:
+        - jwtAuth: []
+  /user/findAll:
+    get:
+      summary: Obtener todos los usuarios
+      responses:
+        '200':
+          description: Lista de usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+      security:
+        - jwtAuth: []
+  /auth/register:
+    post:
+      summary: Registrar un usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: Usuario registrado
+  /auth/login:
+    post:
+      summary: Iniciar sesión
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Usuario autenticado
+components:
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Character:
+      type: object
+      properties:
+        id:
+          type: integer
+        nombre:
+          type: string
+        edad:
+          type: integer
+        peso:
+          type: number
+        historia:
+          type: string
+        imagen:
+          type: string
+    Genre:
+      type: object
+      properties:
+        id:
+          type: integer
+        nombre:
+          type: string
+        imagen:
+          type: string
+    Audiovisual:
+      type: object
+      properties:
+        id:
+          type: integer
+        titulo:
+          type: string
+        imagen:
+          type: string
+        fechaCreacion:
+          type: string
+          format: date
+        calificacion:
+          type: integer
+        generoId:
+          type: integer
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
