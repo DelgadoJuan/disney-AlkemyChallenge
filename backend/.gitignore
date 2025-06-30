@@ -1,0 +1,8 @@
+# Email data
+/src/main/resources/email.properties
+
+# JWT keys
+/src/main/resources/jwtKeys/**
+
+# Images
+/src/main/resources/static/images/**
